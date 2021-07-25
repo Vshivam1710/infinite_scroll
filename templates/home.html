@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Infine Scroll - Home
+{% endblock %}
+
+{% block content %}
+    <div class="col-sm-12 h1 text-center">
+        Infine Scroll
+    </div>
+    
+    <div class="col-sm-12 h1 text-center mt-5">
+        Add User Information
+    </div>
+
+    <div class="col-md-12 mt-5">
+        <form class="row g-3" method="POST">
+            {% csrf_token %}
+            <div class="col-md-4">
+                <label for="f_name" class="form-label">First Name</label>
+                <input type="text" class="form-control" name="f_name" id="f_name" required>
+            </div>
+            <div class="col-md-4">
+                <label for="l_name" class="form-label">Last Name</label>
+                <input type="text" class="form-control" name="l_name" id="l_name" required>
+            </div>
+            
+            <div class="col-md-4">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" name="email" id="email" required>
+            </div>
+            
+            <div class="col-12">
+                <div class="d-grid gap-2">
+                    <button class="btn btn-outline-success" type="submit">Save</button>
+                </div>
+            </div>
+          </form>
+    </div>
+
+    <div class="col-sm-12 h1 text-center mt-5">
+        User Data
+    </div>
+
+    <div class="col-sm-12">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody class="infinite-container">
+                {% for user in users %}
+                    <tr class="infinite-item">
+                        <th scope="row">{{ user.pk }}</th>
+                        <td>{{ user.get_full_name }}</td>
+                        <td>{{ user.email }}</td>
+                        {% if user.is_active %}
+                            <td class="text-success">
+                                Active
+                            </td>
+                        {% else %}
+                            <td class="text-danger">
+                                Deactive
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+        
+        {% if users.has_next %}
+            <a class="infinite-more-link" href="?page={{ users.next_page_number }}"></a>
+        {% endif %}
+        
+        {% if users %}
+            <div class="d-flex justify-content-center">
+                <div class="spinner-grow text-success loading" role="status">
+                <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="spinner-grow text-primary loading mx-2" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="spinner-grow text-danger loading" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block JavaScript %}
+    <script>
+        var infinite = new Waypoint.Infinite({
+            element: $('.infinite-container')[0],
+            onBeforePageLoad: function () {
+                $('.loading').show();
+            },
+            onAfterPageLoad: function ($items) {
+                $('.loading').hide();
+            }
+        });
+    </script>
+{% endblock %}
