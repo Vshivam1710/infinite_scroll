@@ -2,45 +2,51 @@
 {% load static %}
 
 {% block title %}
-Infine Scroll - Home
+Infinite Scroll - Home
 {% endblock %}
 
 {% block content %}
-    <div class="col-sm-12 h1 text-center">
-        Infine Scroll
+    <div class="row">
+        <div class="col-sm-12 h1 text-center">
+            Infinite Scroll
+        </div>
     </div>
     
-    <div class="col-sm-12 h1 text-center mt-5">
-        Add User Information
-    </div>
+    <div class="row">
+        <div class="col-sm-12 h1 text-center mt-5">
+            Add User Information
+        </div>
 
-    <div class="col-md-12 mt-5">
-        <form class="row g-3" method="POST">
-            {% csrf_token %}
-            <div class="col-md-4">
-                <label for="f_name" class="form-label">First Name</label>
-                <input type="text" class="form-control" name="f_name" id="f_name" required>
-            </div>
-            <div class="col-md-4">
-                <label for="l_name" class="form-label">Last Name</label>
-                <input type="text" class="form-control" name="l_name" id="l_name" required>
-            </div>
-            
-            <div class="col-md-4">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" name="email" id="email" required>
-            </div>
-            
-            <div class="col-12">
-                <div class="d-grid gap-2">
-                    <button class="btn btn-outline-success" type="submit">Save</button>
+        <div class="col-md-12 mt-5">
+            <form class="row g-3" method="POST">
+                {% csrf_token %}
+                <div class="col-md-4">
+                    <label for="f_name" class="form-label">First Name</label>
+                    <input type="text" class="form-control" name="f_name" id="f_name" required>
                 </div>
-            </div>
-          </form>
+                <div class="col-md-4">
+                    <label for="l_name" class="form-label">Last Name</label>
+                    <input type="text" class="form-control" name="l_name" id="l_name" required>
+                </div>
+                
+                <div class="col-md-4">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" name="email" id="email" required>
+                </div>
+                
+                <div class="col-12">
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-outline-success" type="submit">Save</button>
+                    </div>
+                </div>
+              </form>
+        </div>
     </div>
-
-    <div class="col-sm-12 h1 text-center mt-5">
-        User Data
+    
+    <div class="row">
+        <div class="col-sm-12 h1 text-center mt-5">
+            User Data
+        </div>
     </div>
 
     <div class="col-sm-12">
@@ -74,7 +80,7 @@ Infine Scroll - Home
           </table>
         
         {% if users.has_next %}
-            <a class="infinite-more-link" href="?page={{ users.next_page_number }}"></a>
+            <a class="infinite-more-link" id="test" data-number="{{ users.next_page_number }}" href="?page={{ users.next_page_number }}"></a>
         {% endif %}
         
         {% if users %}
@@ -95,14 +101,14 @@ Infine Scroll - Home
 
 {% block JavaScript %}
     <script>
-        var infinite = new Waypoint.Infinite({
+        let infinite = new Waypoint.Infinite({
             element: $('.infinite-container')[0],
             onBeforePageLoad: function () {
                 $('.loading').show();
             },
             onAfterPageLoad: function ($items) {
                 $('.loading').hide();
-            }
+            },
         });
     </script>
 {% endblock %}

@@ -9,7 +9,7 @@ class HomePage(View):
     template_name: str = 'home.html'
 
     def get(self, request):
-        users = User.objects.all()
+        users = User.objects.all().order_by('-pk')
         page = request.GET.get('page', 1)
         paginator = Paginator(users, 10)
         try:
